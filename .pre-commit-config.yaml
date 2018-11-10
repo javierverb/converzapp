@@ -1,0 +1,15 @@
+repos:
+-   repo: git://github.com/pre-commit/pre-commit-hooks
+    sha: v1.2.3
+    hooks:
+    -   id: end-of-file-fixer
+    -   id: check-json
+    -   id: flake8
+    -   id: check-merge-conflict
+        language: python
+
+# -   repo: git://github.com/FalconSocial/pre-commit-mirrors-pep257
+#     sha: 'master'
+#     hooks:
+#     -   id: pep257
+#         language: python

@@ -1,0 +1,17 @@
+[flake8]
+max-line-length = 120
+exclude = .svn,
+          CVS,
+          .bzr,
+          .hg,
+          .git,
+          __pycache__,
+          tests/*,
+          tests.py,
+          manage.py,
+          *migrations*,
+          *frontend*,
+          *.txt,
+          *settings*
+
+filename = *.py
