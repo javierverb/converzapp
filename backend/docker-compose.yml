@@ -1,0 +1,8 @@
+version: '3'
+services:
+  gateway:
+    stdin_open: true
+    tty: true
+    build: .
+    ports:
+     - "5000:5000"
