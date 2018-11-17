@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+<script>
+	var socket = new WebSocket('ws://localhost:5000/webirc/websocket/');
+
+	socket.onopen = function (event) {
+		console.log(event);
+	};
+	socket.onmessage = function (event) {
+	  console.log(event.data);
+	}
+</script>
+</body>
+</html>
