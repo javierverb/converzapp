@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IRC } from '../../classes/irc';
+import { IRC } from '../../classes/irc/irc';
 
 @Component({
   selector: 'app-root',
