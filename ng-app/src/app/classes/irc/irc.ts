@@ -7,7 +7,7 @@ export class IRC {
   private parser;
   private hostname: string;
   private serverhost: string;
-  private channels:[string];
+  private channels: [{}];
 
   private __servername = 'irc.irc-hispano.org';
   // private __servername = 'livingstone.freenode.net';
@@ -47,6 +47,8 @@ export class IRC {
   }
 
   private onwelcome(content): void {
+    this.listChannels();
+    this.channels = [{}];
   }
 
   private onping(content): void {
@@ -78,13 +80,14 @@ export class IRC {
   }
 
   private onlist(content) {
-    /* TODO: extraer channel , description y cantidad de usuarios
-    el contenido viene de la forma...
-    :ganimedes.chathispano.com 322 javierverb #El_Salvador 5 :Chat de #El_Salvador pasa y disfruta del chat salvadoreño!!!!
-    el primer '#' determina el nombre del canal, el primer número después del canal determina la cantidad de usuarios
-    remover los primeros ':' con .slice(1)
-    los otros ':' determinan la descripción del canal
-    */
+    let data = content.slice(1).split(':');
+    let channelData = data[0].split(' ').splice(3, 2);
+    const channel = {
+      name: channelData[0],
+      quantity: channelData[1],
+      description: data[1],
+    }
+    this.channels.push(channel);
   }
 
   private listChannels() {
