@@ -81,11 +81,12 @@ export class IRC {
 
   private onlist(content) {
     const indexDescription = content.slice(1).indexOf(' :');
-    const description = content.slice(indexDescription + 3);
     const channelData = content.slice(1, indexDescription).split(' ').slice(3, 5);
+    const name = channelData[0];
     const quantity = (channelData[1] === '' ? '0' : channelData[1]);
+    const description = content.slice(indexDescription + 3);
     const channel = {
-      name: channelData[0],
+      name: name,
       quantity: quantity,
       description: description,
     }
