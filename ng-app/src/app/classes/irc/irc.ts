@@ -104,7 +104,7 @@ export class IRC {
   }
 
   private onnamreply(content) {
-    "Parse users list with JOIN"
+    //Parse users list with JOIN
     const indexUser = content.indexOf(' :');
     let users = content.slice(indexUser + 2).split(' ');
     users.pop()
