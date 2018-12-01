@@ -8,6 +8,7 @@ export class IRC {
   private hostname: string;
   private serverhost: string;
   private channels: [{}];
+  private usersList: string[];
 
   private __servername = 'irc.irc-hispano.org';
   // private __servername = 'livingstone.freenode.net';
@@ -83,7 +84,6 @@ export class IRC {
     const indexDescription = content.slice(1).indexOf(' :');
     const channelData = content.slice(1, indexDescription + 1).split(' ').slice(3, 5);
     const name = channelData[0];
-    debugger;
     const quantity = (channelData[1] === '' ? '0' : channelData[1]);
     const description = content.slice(indexDescription + 3);
     const channel = {
@@ -100,6 +100,14 @@ export class IRC {
 
   private onendofmotd(content) {
     this.ws.send('JOIN #undefined');
+    this.usersList = [];
   }
 
+  private onnamreply(content) {
+    //Parse users list with JOIN
+    const indexUser = content.indexOf(' :');
+    let users = content.slice(indexUser + 2).split(' ');
+    users.pop()
+    this.usersList = this.usersList.concat(users);
+  }
 }
