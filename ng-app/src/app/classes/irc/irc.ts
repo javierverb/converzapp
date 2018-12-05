@@ -7,7 +7,8 @@ export class IRC {
   private parser;
   private hostname: string;
   private serverhost: string;
-  private channels:[string];
+  private channels: [{}];
+  private usersList: string[];
 
   private __servername = 'irc.irc-hispano.org';
   // private __servername = 'livingstone.freenode.net';
@@ -47,6 +48,8 @@ export class IRC {
   }
 
   private onwelcome(content): void {
+    this.listChannels();
+    this.channels = [{}];
   }
 
   private onping(content): void {
@@ -78,13 +81,17 @@ export class IRC {
   }
 
   private onlist(content) {
-    /* TODO: extraer channel , description y cantidad de usuarios
-    el contenido viene de la forma...
-    :ganimedes.chathispano.com 322 javierverb #El_Salvador 5 :Chat de #El_Salvador pasa y disfruta del chat salvadoreño!!!!
-    el primer '#' determina el nombre del canal, el primer número después del canal determina la cantidad de usuarios
-    remover los primeros ':' con .slice(1)
-    los otros ':' determinan la descripción del canal
-    */
+    const indexDescription = content.slice(1).indexOf(' :');
+    const channelData = content.slice(1, indexDescription + 1).split(' ').slice(3, 5);
+    const name = channelData[0];
+    const quantity = (channelData[1] === '' ? '0' : channelData[1]);
+    const description = content.slice(indexDescription + 3);
+    const channel = {
+      name: name,
+      quantity: quantity,
+      description: description,
+    }
+    this.channels.push(channel);
   }
 
   private listChannels() {
@@ -93,6 +100,14 @@ export class IRC {
 
   private onendofmotd(content) {
     this.ws.send('JOIN #undefined');
+    this.usersList = [];
   }
 
+  private onnamreply(content) {
+    //Parse users list with JOIN
+    const indexUser = content.indexOf(' :');
+    let users = content.slice(indexUser + 2).split(' ');
+    users.pop()
+    this.usersList = this.usersList.concat(users);
+  }
 }
