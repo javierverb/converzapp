@@ -1,0 +1,12 @@
+<section id="group-container">
+  <div *ngFor="let group of groups">
+    <div class="group-card" [routerLink]="['group', group.id]">
+      <div class="text-container">
+        <span class="title">{{ group.title }}</span>
+        <br>
+        <span class="mt-3 description">{{ group.description }}</span>
+      </div>
+    </div>
+    <hr>
+  </div>
+</section>

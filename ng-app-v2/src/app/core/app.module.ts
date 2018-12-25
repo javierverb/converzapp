@@ -3,16 +3,20 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
 
+
 import { CoreRoutingModule } from './app-routing.module';
 import { BaseComponent } from './base/base.component';
-import { SidenavComponent } from './sidenav/sidenav.component';
 import { ChatsComponent } from './chats/chats.component';
+import { GroupsComponent } from './groups/groups.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+
 
 @NgModule({
   declarations: [
     SidenavComponent,
     BaseComponent,
     ChatsComponent,
+    GroupsComponent,
   ],
   imports: [
     BrowserModule,

@@ -48,6 +48,7 @@
               "src/styles/styles.scss"
             ],
             "scripts": [
+              "node_modules/blueimp-md5/js/md5.min.js"
             ]
           },
           "configurations": {
