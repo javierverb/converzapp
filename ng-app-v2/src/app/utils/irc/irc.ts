@@ -1,4 +1,5 @@
-declare var md5;
+import { BehaviorSubject } from 'rxjs';
+
 import { Parser } from './parser';
 import { codes } from './_events';
 
@@ -8,14 +9,19 @@ export class IRC {
   private parser;
   private hostname: string;
   private serverhost: string;
-  private channels: [{}];
+
+  public bsChannels = new BehaviorSubject([{}]);
+  private _channels: any[];
+
+  public bsConversation = new BehaviorSubject([{}]);
+  private _conversation: any[];
+
   private usersList: string[];
 
   private __servername = 'irc.irc-hispano.org';
   // private __servername = 'livingstone.freenode.net';
 
   constructor() {
-    this._fetchHostname();
     this.parser = new Parser();
     this.ws = new WebSocket('ws://localhost:5000/webirc/websocket/');
     this.ws.onmessage = (event: any) => {
@@ -40,17 +46,8 @@ export class IRC {
     this.ws.send('ENCODING CP1252');
   }
 
-  private _fetchHostname(): void {
-    fetch('https://api.ipify.org?format=json').then((response) => {
-      return response.json();
-    }).then((jsonResponse) => {
-      this.hostname = jsonResponse;
-    });
-  }
-
   private onwelcome(content): void {
     this.listChannels();
-    this.channels = [{}];
   }
 
   private onping(content): void {
@@ -74,7 +71,8 @@ export class IRC {
     let payload = {
       from: sender, to: receiver, message: message
     };
-    console.log(payload);
+    this._conversation.push(payload);
+    this.bsConversation.next(this._conversation);
   }
 
   private onyourhost(content) {
@@ -87,13 +85,13 @@ export class IRC {
     const name = channelData[0];
     const quantity = (channelData[1] === '' ? '0' : channelData[1]);
     const description = content.slice(indexDescription + 3);
-    const channel = {
+    const item = {
       name: name,
-      id: md5(name),
       quantity: quantity,
       description: description,
     }
-    this.channels.push(channel);
+    this._channels.push(item);
+    this.bsChannels.next(this._channels);
   }
 
   private listChannels() {

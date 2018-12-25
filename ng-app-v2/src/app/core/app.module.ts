@@ -10,6 +10,8 @@ import { ChatsComponent } from './chats/chats.component';
 import { GroupsComponent } from './groups/groups.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 
+import { GlobalsService } from '@app/services/globals.service';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +31,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
     MatIconModule,
     MatListModule,
   ],
-  providers: [],
+  providers: [GlobalsService],
   bootstrap: [BaseComponent]
 })
 export class AppModule { }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-declare var md5;
+import { GlobalsService } from '@app/services/globals.service';
 
 @Component({
   selector: 'groups',
@@ -8,35 +8,13 @@ declare var md5;
 })
 export class GroupsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private globals: GlobalsService) {
+    globals.irc.bsChannels.subscribe((data) => {
+      this.groups.push(data);
+    });
+  }
 
-  groups = [
-    {
-      'title': '#Argentina',
-      'id': md5('#Argentina'),
-      'description': ' **´¯`*.¸¸.*´¯`*(¡¡Bienvenidos!!! Esperando pasen una excelente estadía!!! Les desea la Familia de #Lc-de_30_a_40. /nuestra radio oficial ¦€¦  Radio-¡BooM!  ¦€¦)*´¯`*.¸¸.*´'
-    },
-    {
-      'title': '#Argentina',
-      'id': md5('#Argentina'),
-      'description': ' **´¯`*.¸¸.*´¯`*(¡¡Bienvenidos!!! Esperando pasen una excelente estadía!!! Les desea la Familia de #Lc-de_30_a_40. /nuestra radio oficial ¦€¦  Radio-¡BooM!  ¦€¦)*´¯`*.¸¸.*´'
-    },
-    {
-      'title': '#Argentina',
-      'id': md5('#Argentina'),
-      'description': ' **´¯`*.¸¸.*´¯`*(¡¡Bienvenidos!!! Esperando pasen una excelente estadía!!! Les desea la Familia de #Lc-de_30_a_40. /nuestra radio oficial ¦€¦  Radio-¡BooM!  ¦€¦)*´¯`*.¸¸.*´'
-    },
-    {
-      'title': '#Argentina',
-      'id': md5('#Argentina'),
-      'description': ' **´¯`*.¸¸.*´¯`*(¡¡Bienvenidos!!! Esperando pasen una excelente estadía!!! Les desea la Familia de #Lc-de_30_a_40. /nuestra radio oficial ¦€¦  Radio-¡BooM!  ¦€¦)*´¯`*.¸¸.*´'
-    },
-    {
-      'title': '#Argentina',
-      'id': md5('#Argentina'),
-      'description': ' **´¯`*.¸¸.*´¯`*(¡¡Bienvenidos!!! Esperando pasen una excelente estadía!!! Les desea la Familia de #Lc-de_30_a_40. /nuestra radio oficial ¦€¦  Radio-¡BooM!  ¦€¦)*´¯`*.¸¸.*´'
-    },
-  ];
+  groups = [];
 
   ngOnInit() {
   }
