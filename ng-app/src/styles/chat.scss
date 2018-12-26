@@ -1,0 +1,89 @@
+@import "_palette.scss";
+
+
+#chat-container {
+  background-color: $white-smoke;
+  height: 95vh;
+  padding: 0px;
+}
+
+.toggler {
+  color: $light-sea;
+}
+
+
+.box-me {
+  min-width: 300px;
+  margin: 50px auto;
+  background: $sprout;
+  padding: 10px;
+  text-align: left;
+  color: black;
+  font-family: arial;
+  position: relative;
+  border-radius: 5px
+}
+
+.box {
+  min-width: 300px;
+  margin: 50px auto;
+  background: white;
+  padding: 10px;
+  text-align: left;
+  color: black;
+  font-family: arial;
+  position: relative;
+  border-radius: 5px
+}
+
+.sb1:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 10px solid $sprout;
+  border-right: 10px solid transparent;
+  border-top: 10px solid $sprout;
+  border-bottom: 10px solid transparent;
+  right: -19px;
+  top: 6px;
+}
+
+.sb2:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 10px solid transparent;
+  border-right: 10px solid white;
+  border-top: 10px solid white;
+  border-bottom: 10px solid transparent;
+  left: -19px;
+  top: 6px;
+}
+
+.sb3:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 10px solid $sprout;
+  border-right: 10px solid transparent;
+  border-top: 10px solid $sprout;
+  border-bottom: 10px solid transparent;
+  left: 19px;
+  bottom: -19px;
+}
+
+.sb4:before {
+  content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 10px solid transparent;
+  border-right: 10px solid $sprout;
+  border-top: 10px solid $sprout;
+  border-bottom: 10px solid transparent;
+  right: 19px;
+  bottom: -19px;
+}
