@@ -11,6 +11,7 @@ import { GroupsComponent } from './groups/groups.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 
 import { GlobalsService } from '@app/services/globals.service';
+import { ContactsComponent } from './contacts/contacts.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { GlobalsService } from '@app/services/globals.service';
     BaseComponent,
     ChatsComponent,
     GroupsComponent,
+    ContactsComponent,
   ],
   imports: [
     BrowserModule,

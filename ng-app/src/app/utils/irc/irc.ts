@@ -20,7 +20,8 @@ export class IRC {
   public bsConversation = new BehaviorSubject({});
   private _conversation = {};
 
-  private usersList: string[];
+  public bsContacts = new BehaviorSubject({});
+  private usersList: any[];
 
   private __servername = 'irc.irc-hispano.org';
   public username = 'mynameisskrillex';
@@ -64,6 +65,11 @@ export class IRC {
     return target.startsWith('#');
   }
 
+  private _pushOrCreateConversation(id, payload) {
+    (this._conversation[id] ? this._conversation[id].push(payload)
+                            : this._conversation[id] = [payload]);
+  }
+
   private onprivmsg(content): void {
     // first retrieve the messageData
     let messageData = content.slice(1).split('PRIVMSG');
@@ -82,8 +88,7 @@ export class IRC {
     };
     let id = md5(receiver);
     if (this._isChannel(receiver)) {
-      (this._conversation[id] ? this._conversation[id].push(payload)
-                              : this._conversation[id] = [payload]);
+      this._pushOrCreateConversation(id, payload);
     }
     else {
       // debugger;
@@ -135,17 +140,28 @@ export class IRC {
 
   public privmsg(to, message) {
     let target = this.hashMap[to];
+    let payload = {
+      from: this.username, to: target, message: message,
+    };
     this.ws.send(`PRIVMSG ${target} :${message}`);
+    this._pushOrCreateConversation(to, payload);
+    this.bsConversation.next(this._conversation);
   }
 
-  private onnamreply(content) {
+  private onnamreply(content: string) {
     //Parse users list with JOIN
+
+    const indexChannel = content.indexOf('#');
+    let channel = content.slice(indexChannel).split(' ')[0];
+
     const indexUser = content.indexOf(' :');
     let users = content.slice(indexUser + 2).split(' ');
-    users.pop()
+    users = users.slice(1);
     this.usersList = this.usersList.concat(users);
+    this.bsContacts[md5(channel)] = [];
     this.usersList.forEach((item) => {
       this.hashMap[md5(item)] = item;
+      this.bsContacts[md5(channel)].push({'name': item, 'id': md5(item)});
     });
   }
 }

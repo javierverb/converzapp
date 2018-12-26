@@ -1,0 +1,14 @@
+@import "styles/_palette.scss";
+
+#contact-container {
+  width: 20rem;
+  .contact-card {
+    cursor: pointer;
+    height: 72px;
+    max-width: 375px;
+    .name {
+      margin-left: 25%;
+      font-size: 1.2rem;
+    }
+  }
+}
