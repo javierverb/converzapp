@@ -13,6 +13,7 @@
   <ng-template #otherUser>
     <div class="w-100 d-flex" [ngClass]="{'mt-4': isFirst}">
       <div class="float-left mr-auto box sb2 mat-elevation-z2">
+        <b class="c-pointer" [routerLink]="['/chat', chat.fromId]">{{ chat.from }}</b><br>
         {{ chat.message }}
       </div>
     </div>

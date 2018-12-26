@@ -84,7 +84,7 @@ export class IRC {
     let receiver = messageData[1].slice(0, indexReceiver).replace(/\s/g, '');
     let message = messageData[1].slice(indexReceiver + 1);
     let payload = {
-      from: sender, to: receiver, message: message
+      from: sender, fromId: md5(sender), to: receiver, message: message
     };
     let id = md5(receiver);
     if (this._isChannel(receiver)) {
@@ -125,7 +125,7 @@ export class IRC {
     */
     let minValue = '40';
     let maxValue = '10000';
-    this.ws.send(`LIST #undefined >${minValue},<${maxValue}`);
+    this.ws.send(`LIST *argentina* >${minValue},<${maxValue}`);
   }
 
   private onlistend() {
@@ -134,7 +134,7 @@ export class IRC {
   }
 
   private onendofmotd(content) {
-    this.ws.send('JOIN #undefined');
+    this.ws.send('JOIN #argentina');
     this.usersList = [];
   }
 

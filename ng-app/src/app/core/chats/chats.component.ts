@@ -12,7 +12,7 @@ export class ChatsComponent implements OnInit {
 
   constructor(private groupService: GroupsService, private route: ActivatedRoute, private globals: GlobalsService) {}
   private chatId = '';
-  private conversation = [];
+  private conversation;
   private username = '';
   private message = '';
 
@@ -20,15 +20,16 @@ export class ChatsComponent implements OnInit {
     this.route.paramMap.subscribe((param) => {
       this.chatId = param.get('id');
       this.groupService.triggerSelectedGroup(this.chatId);
+      this.conversation = this.globals.irc.bsConversation.value[this.chatId];
     });
     this.username = this.globals.irc.username;
     this.globals.irc.bsConversation.subscribe((converzations: any) => {
       this.conversation = converzations[this.chatId];
     });
+
   }
 
   private sendMessage() {
-    console.log('username:', this.username);
     this.globals.irc.privmsg(this.chatId, this.message);
     this.message = '';
   }
