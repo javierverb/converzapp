@@ -8,15 +8,15 @@ import { GlobalsService } from '@app/services/globals.service';
 })
 export class GroupsComponent implements OnInit {
 
+  private groups = [];
+
   constructor(private globals: GlobalsService) {
-    globals.irc.bsChannels.subscribe((data) => {
-      this.groups.push(data);
-    });
   }
 
-  groups = [];
-
   ngOnInit() {
+    this.globals.irc.bsChannels.subscribe((groups: any) => {
+      this.groups = groups;
+    });
   }
 
 }

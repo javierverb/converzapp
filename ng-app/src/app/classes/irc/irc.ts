@@ -1,4 +1,3 @@
-declare var md5;
 import { Parser } from './parser';
 import { codes } from './_events';
 
@@ -89,7 +88,6 @@ export class IRC {
     const description = content.slice(indexDescription + 3);
     const channel = {
       name: name,
-      id: md5(name),
       quantity: quantity,
       description: description,
     }

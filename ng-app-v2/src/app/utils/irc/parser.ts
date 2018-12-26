@@ -17,7 +17,7 @@ export class Parser {
 
     // maybe its a event message
     let key = contentList[1];
-    console.log('key:', key);
+    // console.log('key:', key);
     if (codes[key]) {
       return codes[key];
     }

@@ -3,28 +3,3 @@
 .sidenav-container {
   height: 95vh;
 }
-
-
-.bg-message-content {
-  background-image: url('assets/web/bg-2.png');
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  z-index: 0;
-}
-
-#message-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background-color: $white-smoke;
-  textarea {
-    min-height: 50px;
-    max-height: 300px;
-    border-radius: 100px;
-    border-width: 0.1px;
-    border-style: none;
-    width: 100%;
-    resize: none;
-  }
-}

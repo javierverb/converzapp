@@ -2,7 +2,7 @@
   <div *ngFor="let group of groups">
     <div class="group-card" [routerLink]="['group', group.id]">
       <div class="text-container">
-        <span class="title">{{ group.title }}</span>
+        <span class="title">{{ group.name }}</span>
         <br>
         <span class="mt-3 description">{{ group.description }}</span>
       </div>

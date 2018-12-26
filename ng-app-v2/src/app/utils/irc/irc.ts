@@ -1,7 +1,9 @@
-import { BehaviorSubject } from 'rxjs';
+import { AsyncSubject, BehaviorSubject } from 'rxjs';
 
 import { Parser } from './parser';
 import { codes } from './_events';
+
+declare var md5;
 
 export class IRC {
 
@@ -10,15 +12,16 @@ export class IRC {
   private hostname: string;
   private serverhost: string;
 
-  public bsChannels = new BehaviorSubject([{}]);
-  private _channels: any[];
+  public bsChannels = new AsyncSubject();
+  private _channels = [];
 
-  public bsConversation = new BehaviorSubject([{}]);
-  private _conversation: any[];
+  public bsConversation = new BehaviorSubject({});
+  private _conversation = {};
 
   private usersList: string[];
 
   private __servername = 'irc.irc-hispano.org';
+  public username = 'mynameisskrillex';
   // private __servername = 'livingstone.freenode.net';
 
   constructor() {
@@ -27,7 +30,7 @@ export class IRC {
     this.ws.onmessage = (event: any) => {
       let commandName = this.parser.parseCommand(event.data);
       // like as getattr from python:
-      console.log('commandName: ', commandName);
+      // console.log('commandName: ', commandName);
       let command = this[`on${commandName}`];
       (command != undefined ? command.bind(this, event.data)() : null);
     }
@@ -37,9 +40,9 @@ export class IRC {
   }
 
   private _configureSession(): void {
-    let msg = `USER mynameisskrillex mynameisskrillex  ${this.__servername} :mi nombre real`;
+    let msg = `USER ${this.username} ${this.username} ${this.__servername} :mi nombre real`;
     this.ws.send(msg);
-    this.ws.send(`NICK mynameisskrillex`);
+    this.ws.send(`NICK ${this.username}`);
     msg = 'CAP REQ :account-notify extended-join identify-msg multi-prefix';
     this.ws.send(msg);
     this.ws.send('CAP END');
@@ -53,6 +56,10 @@ export class IRC {
   private onping(content): void {
     let serverName = content.split(':').pop();
     this.ws.send(`PONG :${serverName}`);
+  }
+
+  private _isChannel(target: string) {
+    return target.startsWith('#');
   }
 
   private onprivmsg(content): void {
@@ -71,7 +78,14 @@ export class IRC {
     let payload = {
       from: sender, to: receiver, message: message
     };
-    this._conversation.push(payload);
+    let id = md5(receiver);
+    if (this._isChannel(receiver)) {
+      (this._conversation[id] ? this._conversation[id].push(payload)
+                              : this._conversation[id] = [payload]);
+    }
+    else {
+      // debugger;
+    }
     this.bsConversation.next(this._conversation);
   }
 
@@ -87,15 +101,27 @@ export class IRC {
     const description = content.slice(indexDescription + 3);
     const item = {
       name: name,
+      id: md5(name),
       quantity: quantity,
       description: description,
     }
     this._channels.push(item);
-    this.bsChannels.next(this._channels);
   }
 
   private listChannels() {
-    this.ws.send('LIST >4,<10000');
+    /* Retrieve channels where
+    channels.people.length > minValue
+    and
+    channels.people.length < maxValue
+    */
+    let minValue = '40';
+    let maxValue = '10000';
+    this.ws.send(`LIST #undefined >${minValue},<${maxValue}`);
+  }
+
+  private onlistend() {
+    this.bsChannels.next(this._channels);
+    this.bsChannels.complete();
   }
 
   private onendofmotd(content) {

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { IRC } from '@app/utils/irc/irc';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class GlobalsService {
 
-  public irc: IRC;
+  public irc = new IRC();
 
   constructor() {
-    this.irc = new IRC();
   }
 }
