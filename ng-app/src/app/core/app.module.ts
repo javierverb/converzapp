@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
-
 
 import { CoreRoutingModule } from './app-routing.module';
 import { BaseComponent } from './base/base.component';
@@ -22,6 +22,7 @@ import { GlobalsService } from '@app/services/globals.service';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     CoreRoutingModule,
     //  material modules:
     BrowserAnimationsModule,

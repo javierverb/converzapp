@@ -14,7 +14,6 @@
 
 .box-me {
   min-width: 300px;
-  margin: 50px auto;
   background: $sprout;
   padding: 10px;
   text-align: left;
@@ -26,7 +25,6 @@
 
 .box {
   min-width: 300px;
-  margin: 50px auto;
   background: white;
   padding: 10px;
   text-align: left;
@@ -86,4 +84,29 @@
   border-bottom: 10px solid transparent;
   right: 19px;
   bottom: -19px;
+}
+
+#message-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: $white-smoke;
+  textarea {
+    min-height: 50px;
+    max-height: 300px;
+    border-radius: 100px;
+    border-width: 0.1px;
+    border-style: none;
+    width: 100%;
+    resize: none;
+  }
+}
+
+
+.bg-message-content {
+  background-image: url('assets/web/bg-2.png');
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 0;
 }

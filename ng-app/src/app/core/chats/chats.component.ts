@@ -13,6 +13,7 @@ export class ChatsComponent implements OnInit {
   private chatId = '';
   private conversation = [];
   private username = '';
+  private message = '';
 
   ngOnInit() {
     this.route.paramMap.subscribe((param) => this.chatId = param.get('id'));
@@ -20,12 +21,12 @@ export class ChatsComponent implements OnInit {
     this.globals.irc.bsConversation.subscribe((converzations: any) => {
       this.conversation = converzations[this.chatId];
     });
-    this.conversation = [
-      {'from': 'am', 'to': 'pm', 'message': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic quia voluptatibus distinctio maxime culpa laudantium suscipit dolorem quidem? Assumenda eum, asperiores reprehenderit numquam. Rerum officiis nobis, provident accusantium consectetur ab.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente reprehenderit expedita dolores magnam sed odio enim consequuntur? Dolore velit modi qui ut magni ipsa saepe, alias, hic, voluptas dolor nemo.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dicta, error corporis adipisci delectus deserunt molestias quos necessitatibus sint ducimus praesentium? Debitis, aspernatur amet, dolorem quidem ab recusandae et maxime reprehenderit!'},
-      {'from': 'am', 'to': 'pm', 'message': 'donde está el resto?'},
-      {'from': 'am', 'to': 'pm', 'message': 'donde está el resto?'},
-      {'from': 'am', 'to': 'pm', 'message': 'donde está el resto?'},
-    ];
+  }
+
+  private sendMessage() {
+    console.log('username:', this.username);
+    this.globals.irc.privmsg(this.chatId, this.message);
+    this.message = '';
   }
 
 }

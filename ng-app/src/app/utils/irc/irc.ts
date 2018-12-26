@@ -12,6 +12,8 @@ export class IRC {
   private hostname: string;
   private serverhost: string;
 
+  private hashMap = {}; // agenda todos los md5 y los resuelve.
+
   public bsChannels = new AsyncSubject();
   private _channels = [];
 
@@ -99,12 +101,14 @@ export class IRC {
     const name = channelData[0];
     const quantity = (channelData[1] === '' ? '0' : channelData[1]);
     const description = content.slice(indexDescription + 3);
+    let id = md5(name);
     const item = {
       name: name,
-      id: md5(name),
+      id: id,
       quantity: quantity,
       description: description,
     }
+    this.hashMap[id] = name;
     this._channels.push(item);
   }
 
@@ -129,11 +133,19 @@ export class IRC {
     this.usersList = [];
   }
 
+  public privmsg(to, message) {
+    let target = this.hashMap[to];
+    this.ws.send(`PRIVMSG ${target} :${message}`);
+  }
+
   private onnamreply(content) {
     //Parse users list with JOIN
     const indexUser = content.indexOf(' :');
     let users = content.slice(indexUser + 2).split(' ');
     users.pop()
     this.usersList = this.usersList.concat(users);
+    this.usersList.forEach((item) => {
+      this.hashMap[md5(item)] = item;
+    });
   }
 }
