@@ -87,7 +87,7 @@
 }
 
 #message-container {
-  position: absolute;
+  position: sticky;
   bottom: 0;
   width: 100%;
   background-color: $white-smoke;
@@ -103,10 +103,7 @@
 }
 
 
-.bg-message-content {
+.mat-drawer-content {
   background-image: url('assets/web/bg-2.png');
   height: 100%;
-  width: 100%;
-  position: absolute;
-  z-index: 0;
 }

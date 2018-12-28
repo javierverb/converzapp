@@ -1,27 +1,26 @@
-<div class="bg-message-content"></div>
-
-
-<div *ngFor="let chat of conversation; first as isFirst" class="px-5">
-  <div *ngIf="username == chat.from; else otherUser">
-    <div class="w-100 d-flex" [ngClass]="{'mt-4': isFirst}">
-      <div class="float-right ml-auto box-me sb1 mat-elevation-z2">
-        {{ chat.message }}
+<div class="chat-container">
+  <div *ngFor="let chat of conversation; first as isFirst" class="px-5">
+    <div *ngIf="username == chat.from; else otherUser">
+      <div class="w-100 d-flex" [ngClass]="{'mt-4': isFirst}">
+        <div class="float-right ml-auto box-me sb1 mat-elevation-z2">
+          {{ chat.message }}
+        </div>
       </div>
     </div>
+    <br><br>
+    <ng-template #otherUser>
+      <div class="w-100 d-flex" [ngClass]="{'mt-4': isFirst}">
+        <div class="float-left mr-auto box sb2 mat-elevation-z2">
+          <b class="c-pointer" [routerLink]="['/chat', chat.fromId]">{{ chat.from }}</b><br>
+          {{ chat.message }}
+        </div>
+      </div>
+    </ng-template>
   </div>
-  <br><br>
-  <ng-template #otherUser>
-    <div class="w-100 d-flex" [ngClass]="{'mt-4': isFirst}">
-      <div class="float-left mr-auto box sb2 mat-elevation-z2">
-        <b class="c-pointer" [routerLink]="['/chat', chat.fromId]">{{ chat.from }}</b><br>
-        {{ chat.message }}
-      </div>
-    </div>
-  </ng-template>
-</div>
 
-<div id="message-container" class="p-3">
-  <div class="emoji-content"></div>
-  <textarea [(ngModel)]="message" placeholder="Escribe un mensaje aquí"></textarea>
-  <button (click)="sendMessage()">Enviar mensaje</button>
+  <div id="message-container" class="p-3">
+    <div class="emoji-content"></div>
+    <textarea [(ngModel)]="message" placeholder="Escribe un mensaje aquí"></textarea>
+    <button (click)="sendMessage()">Enviar mensaje</button>
+  </div>
 </div>

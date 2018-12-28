@@ -26,7 +26,6 @@ export class ChatsComponent implements OnInit {
     this.globals.irc.bsConversation.subscribe((converzations: any) => {
       this.conversation = converzations[this.chatId];
     });
-
   }
 
   private sendMessage() {
