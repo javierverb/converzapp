@@ -1,5 +1,8 @@
 import { AsyncSubject, BehaviorSubject } from 'rxjs';
 
+import { Channel } from './channel';
+import { ChannelList } from './channel-list';
+import { ContactList } from './contact-list';
 import { Parser } from './parser';
 import { codes } from './_events';
 
@@ -7,161 +10,155 @@ declare var md5;
 
 export class IRC {
 
-  private ws;
-  private parser;
-  private hostname: string;
-  private serverhost: string;
+  private _ws;
+  private _parser;
+  private _hostname: string;
+  private _serverhost: string;
 
-  private hashMap = {}; // agenda todos los md5 y los resuelve.
-
-  public bsChannels = new AsyncSubject();
-  private _channels = [];
+  public asyncChannels = new AsyncSubject();
+  private _channels: ChannelList;
 
   public bsConversation = new BehaviorSubject({});
-  private _conversation = {};
+  public conversation = {};
 
-  public bsContacts = new BehaviorSubject({});
-  private usersList: any[];
+  public bsContacts: BehaviorSubject<ContactList>;
+  private _contacts: ContactList;
 
-  private __servername = 'irc.irc-hispano.org';
+  private readonly __servername = 'irc.irc-hispano.org';
   public username = 'mynameisskrillex';
-  // private __servername = 'livingstone.freenode.net';
 
   constructor() {
-    this.parser = new Parser();
-    this.ws = new WebSocket('ws://localhost:5000/webirc/websocket/');
-    this.ws.onmessage = (event: any) => {
-      let commandName = this.parser.parseCommand(event.data);
+    this._parser = new Parser();
+    this._channels = new ChannelList();
+    this._contacts = new ContactList();
+    this.bsContacts = new BehaviorSubject(this._contacts);
+
+    this._ws = new WebSocket('ws://localhost:5000/webirc/websocket/');
+    this._ws.onmessage = (event: any) => {
+      var commandName = this._parser.parseCommand(event.data);
       // like as getattr from python:
-      // console.log('commandName: ', commandName);
-      let command = this[`on${commandName}`];
+      var command = this[`_on${commandName}`];
       (command != undefined ? command.bind(this, event.data)() : null);
     }
-    this.ws.onopen = (event) => {
+    this._ws.onopen = (event) => {
       this._configureSession();
     }
   }
 
   private _configureSession(): void {
-    let msg = `USER ${this.username} ${this.username} ${this.__servername} :mi nombre real`;
-    this.ws.send(msg);
-    this.ws.send(`NICK ${this.username}`);
+    var msg = `USER ${this.username} ${this.username} ${this.__servername} :mi nombre real`;
+    this._ws.send(msg);
+    this._ws.send(`NICK ${this.username}`);
     msg = 'CAP REQ :account-notify extended-join identify-msg multi-prefix';
-    this.ws.send(msg);
-    this.ws.send('CAP END');
-    this.ws.send('ENCODING CP1252');
+    this._ws.send(msg);
+    this._ws.send('CAP END');
+    this._ws.send('ENCODING CP1252');
   }
 
-  private onwelcome(content): void {
-    this.listChannels();
+  private _onwelcome(content): void {
+    this._listChannels();
   }
 
-  private onping(content): void {
-    let serverName = content.split(':').pop();
-    this.ws.send(`PONG :${serverName}`);
-  }
-
-  private _isChannel(target: string) {
-    return target.startsWith('#');
+  private _onping(content): void {
+    var serverName = content.split(':').pop();
+    this._ws.send(`PONG :${serverName}`);
   }
 
   private _pushOrCreateConversation(id, payload) {
-    (this._conversation[id] ? this._conversation[id].push(payload)
-                            : this._conversation[id] = [payload]);
+    (this.conversation[id] ? this.conversation[id].push(payload)
+                            : this.conversation[id] = [payload]);
   }
 
-  private onprivmsg(content): void {
+  private _onprivmsg(content): void {
     // first retrieve the messageData
-    let messageData = content.slice(1).split('PRIVMSG');
-    let sender = messageData[0].replace(/\s/g, '');
+    var messageData = content.slice(1).split('PRIVMSG');
+    var sender = messageData[0].replace(/\s/g, '');
 
-    let shortIndexName = sender.indexOf('!');
+    var shortIndexName = sender.indexOf('!');
     if (shortIndexName != -1) {
       sender = sender.slice(0, shortIndexName);
     }
 
-    let indexReceiver = messageData[1].indexOf(':');
-    let receiver = messageData[1].slice(0, indexReceiver).replace(/\s/g, '');
-    let message = messageData[1].slice(indexReceiver + 1);
-    let payload = {
-      from: sender, fromId: md5(sender), to: receiver, message: message
+    var indexReceiver = messageData[1].indexOf(':');
+    var receiver = messageData[1].slice(0, indexReceiver).replace(/\s/g, '');
+    var message = messageData[1].slice(indexReceiver + 1);
+    var payload = {
+      from: sender, to: receiver, message: message
     };
-    let id = md5(receiver);
-    if (this._isChannel(receiver)) {
-      this._pushOrCreateConversation(id, payload);
+    if (Channel.isChannel(receiver)) {
+      this._pushOrCreateConversation(receiver, payload);
     }
     else {
-      // debugger;
+      // TODO: check this case
     }
-    this.bsConversation.next(this._conversation);
+    this.bsConversation.next(this.conversation);
   }
 
-  private onyourhost(content) {
-    this.serverhost = content.split(' ')[0].replace(':', '');
+  private _onyourhost(content) {
+    this._serverhost = content.split(' ')[0].replace(':', '');
   }
 
-  private onlist(content) {
+  public resolve(id): any {
+    var item = this._contacts.resolve(id);
+    console.log(item);
+    return (item != undefined ? item : this._channels.resolve(id));
+  }
+
+  private _onlist(content) {
     const indexDescription = content.slice(1).indexOf(' :');
     const channelData = content.slice(1, indexDescription + 1).split(' ').slice(3, 5);
     const name = channelData[0];
     const quantity = (channelData[1] === '' ? '0' : channelData[1]);
     const description = content.slice(indexDescription + 3);
-    let id = md5(name);
     const item = {
-      name: name,
-      id: id,
       quantity: quantity,
       description: description,
     }
-    this.hashMap[id] = name;
-    this._channels.push(item);
+    this._channels.add(name, quantity, description);
   }
 
-  private listChannels() {
+  private _listChannels() {
     /* Retrieve channels where
     channels.people.length > minValue
     and
     channels.people.length < maxValue
     */
-    let minValue = '40';
-    let maxValue = '10000';
-    this.ws.send(`LIST *argentina* >${minValue},<${maxValue}`);
+    var minValue = '40';
+    var maxValue = '10000';
+    this._ws.send(`LIST *argentina* >${minValue},<${maxValue}`);
   }
 
-  private onlistend() {
-    this.bsChannels.next(this._channels);
-    this.bsChannels.complete();
+  private _onlistend() {
+    this.asyncChannels.next(this._channels);
+    this.asyncChannels.complete();
   }
 
-  private onendofmotd(content) {
-    this.ws.send('JOIN #argentina');
-    this.usersList = [];
+  private _onendofmotd(content) {
+    this._ws.send('JOIN #argentina');
   }
 
-  public privmsg(to, message) {
-    let target = this.hashMap[to];
-    let payload = {
+  public privmsg(target, message) {
+    var payload = {
       from: this.username, to: target, message: message,
     };
-    this.ws.send(`PRIVMSG ${target} :${message}`);
-    this._pushOrCreateConversation(to, payload);
-    this.bsConversation.next(this._conversation);
+    this._ws.send(`PRIVMSG ${target} :${message}`);
+    this._pushOrCreateConversation(target, payload);
+    this.bsConversation.next(this.conversation);
   }
 
-  private onnamreply(content: string) {
-    //Parse users list with JOIN
+  private _onnamreply(content: string) {
+    // Parse users list with JOIN
 
     const indexChannel = content.indexOf('#');
-    let channel = content.slice(indexChannel).split(' ')[0];
+    var channel = content.slice(indexChannel).split(' ')[0];
 
     const indexUser = content.indexOf(' :');
-    let users = content.slice(indexUser + 2).split(' ');
-    users = users.slice(1);
-    this.usersList = this.usersList.concat(users);
-    this.bsContacts[md5(channel)] = [];
-    this.usersList.forEach((item) => {
-      this.hashMap[md5(item)] = item;
-      this.bsContacts[md5(channel)].push({'name': item, 'id': md5(item)});
+    var users = content.slice(indexUser + 2).split(' ').sort();
+
+    // namreply response with contacts
+    users.forEach((item) => {
+      this._contacts.add(item, channel);
+      this.bsContacts.next(this._contacts);
     });
   }
 }

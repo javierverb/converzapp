@@ -12,6 +12,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 
 import { GlobalsService } from '@app/services/globals.service';
 import { ContactsComponent } from './contacts/contacts.component';
+import { ChatFragmentComponent } from './chat-fragment/chat-fragment.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ContactsComponent } from './contacts/contacts.component';
     ChatsComponent,
     GroupsComponent,
     ContactsComponent,
+    ChatFragmentComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +35,9 @@ import { ContactsComponent } from './contacts/contacts.component';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+  ],
+  entryComponents: [
+    ChatFragmentComponent,
   ],
   providers: [GlobalsService],
   bootstrap: [BaseComponent]

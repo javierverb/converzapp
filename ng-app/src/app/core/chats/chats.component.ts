@@ -21,6 +21,7 @@ export class ChatsComponent implements OnInit {
       this.chatId = param.get('id');
       this.groupService.triggerSelectedGroup(this.chatId);
       this.conversation = this.globals.irc.bsConversation.value[this.chatId];
+      this.globals.addChatFragment(this.chatId);
     });
     this.username = this.globals.irc.username;
     this.globals.irc.bsConversation.subscribe((converzations: any) => {

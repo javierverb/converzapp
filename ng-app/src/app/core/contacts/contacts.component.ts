@@ -17,7 +17,7 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit() {
     this.groupService.change.subscribe((groupId) => {
-      this.contacts = this.globalService.irc.bsContacts[groupId];
+      this.contacts = this.globalService.irc.bsContacts.value.listByChannel(groupId);
     });
   }
 
