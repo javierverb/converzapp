@@ -5,8 +5,8 @@
 }
 
 .sidenav-header {
-  position: absolute;
+  position: fixed;
   min-height: 3rem;
-  width: 100%;
   background-color: $white-smoke;
+  z-index: 999;
 }
