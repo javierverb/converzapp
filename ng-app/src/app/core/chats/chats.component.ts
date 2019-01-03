@@ -27,7 +27,25 @@ export class ChatsComponent implements OnInit {
     this.globals.irc.bsConversation.subscribe((converzations: any) => {
       this.conversation = converzations[this.chatId];
     });
+    this.conversation = [
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+      {'from': 'Miro', 'to': '#argentina', 'message': 'por lo que yo te quieroooo'},
+    ];
   }
+
 
   private sendMessage() {
     this.globals.irc.privmsg(this.chatId, this.message);

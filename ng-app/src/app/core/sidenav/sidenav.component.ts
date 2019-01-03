@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material';
 
 @Component({
   selector: 'app-sidenav',
@@ -7,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidenavComponent implements OnInit {
 
+  @ViewChild('drawer') drawerLeft: MatSidenav;
+  @ViewChild('drawerRight') drawerRight: MatSidenav;
   constructor() { }
 
   private _resizeHeader() {
@@ -20,6 +23,8 @@ export class SidenavComponent implements OnInit {
     document.addEventListener("DOMContentLoaded", (event) => {
       this._resizeHeader();
     });
+    this.drawerLeft.openedChange.subscribe(() => this._resizeHeader());
+    this.drawerRight.openedChange.subscribe(() => this._resizeHeader());
     window.onresize = this._resizeHeader;
   }
 

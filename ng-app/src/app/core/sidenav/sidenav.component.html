@@ -12,11 +12,11 @@
 
 
   <div class="sidenav-content m-0">
-    <button class="position-sticky toggler" type="button" mat-raised-button (click)="drawer.toggle()">
+    <button class="position-sticky toggler" type="button" mat-raised-button (click)="drawer.toggle(); _resizeHeader()">
       <i class="fa fa-2x fa-globe toggler--icon"></i>
     </button>
 
-    <button class="position-sticky toggler float-right" type="button" mat-raised-button (click)="drawerRight.toggle()">
+    <button class="position-sticky toggler float-right" type="button" mat-raised-button (click)="drawerRight.toggle(); _resizeHeader()">
       <i class="fa fa-2x fa-users toggler--icon"></i>
     </button>
 

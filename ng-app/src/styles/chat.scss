@@ -98,11 +98,13 @@
   textarea {
     min-height: 50px;
     max-height: 300px;
-    border-radius: 100px;
+    border-radius: 1rem;
     border-width: 0.1px;
     border-style: none;
     width: 100%;
     resize: none;
+    padding-top: 15px;
+    padding-left: 10px;
   }
 }
 

@@ -1,6 +1,6 @@
 <section id="contact-container">
   <div *ngFor="let contact of contacts">
-    <div class="contact-card" [routerLink]="['chat', contact.id]">
+    <div class="contact-card" [routerLink]="['chat', contact.name]">
       <div class="text-container">
         <span class="name">{{ contact.name }}</span><br>
       </div>

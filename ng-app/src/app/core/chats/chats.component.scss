@@ -1,0 +1,29 @@
+@import "styles/_palette.scss";
+
+#scroller {
+  position: fixed;
+  bottom: 15px;
+  right: 500px;
+  z-index: 999;
+  padding: 0.6rem;
+  border-radius: 2rem;
+  background-color: white;
+  .fa {
+    color: $dim-gray;
+  }
+}
+
+#send-message-btn {
+  background-color: $white-smoke;
+  cursor: pointer;
+  width: 3rem;
+  border: none;
+  .fa {
+    margin: auto;
+    margin-left: 5px;
+    color: $grey-chateu;
+    &.active {
+      color: $light-sea;
+    }
+  }
+}
