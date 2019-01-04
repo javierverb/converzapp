@@ -100,7 +100,6 @@ export class IRC {
 
   public resolve(id): any {
     var item = this._contacts.resolve(id);
-    console.log(item);
     return (item != undefined ? item : this._channels.resolve(id));
   }
 
@@ -125,7 +124,7 @@ export class IRC {
     */
     var minValue = '40';
     var maxValue = '10000';
-    this._ws.send(`LIST *argentina* >${minValue},<${maxValue}`);
+    this._ws.send(`LIST *sexo* >${minValue},<${maxValue}`);
   }
 
   private _onlistend() {
@@ -134,7 +133,7 @@ export class IRC {
   }
 
   private _onendofmotd(content) {
-    this._ws.send('JOIN #argentina');
+    this._ws.send('JOIN #sexo');
   }
 
   public privmsg(target, message) {
