@@ -1,4 +1,7 @@
-FROM alpine:latest
-ADD "gateway.bin" "bin/."
+FROM ubuntu:18.10
+RUN apt-get update && apt-get upgrade -y
+COPY gateway.bin home/.
+COPY config.conf home/.
+WORKDIR home/
 RUN ["chmod", "+x", "gateway.bin"]
-# CMD "sh bin/gateway.bin"
+EXPOSE 5000
