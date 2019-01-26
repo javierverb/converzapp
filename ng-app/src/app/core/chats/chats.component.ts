@@ -23,33 +23,17 @@ export class ChatsComponent implements OnInit {
     content.scrollTo(0, content.scrollHeight);
   }
 
-  private _setStyleMessageContainer(chatId) {
-    console.log(this.positionMap[chatId]);
-    if (!this.positionMap[chatId]) {
-      var messageContainer = document.getElementById('message-container');
-      messageContainer.style.position = 'absolute';
-      var drawerContent = <HTMLElement>document.querySelector('.mat-drawer-content');
-      if (drawerContent.scrollHeight > drawerContent.offsetHeight) {
-        messageContainer.style.position = 'sticky';
-        this.positionMap[chatId] = true;
-      }
-    }
-  }
   ngOnInit() {
-    document.addEventListener("DOMContentLoaded", (ev) => this._setStyleMessageContainer(this.chatId));
-
     this.handleScroll();
     this.route.paramMap.subscribe((param) => {
       this.chatId = param.get('id');
       this.groupService.triggerSelectedGroup(this.chatId);
       this.conversation = this.globals.irc.bsConversation.value[this.chatId];
       this.globals.addChatFragment(this.chatId);
-      this._setStyleMessageContainer(this.chatId);
     });
     this.username = this.globals.irc.username;
     this.globals.irc.bsConversation.subscribe((converzations: any) => {
       this.conversation = converzations[this.chatId];
-      this._setStyleMessageContainer(this.chatId);
     });
   }
 

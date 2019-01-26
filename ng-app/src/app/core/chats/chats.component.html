@@ -21,13 +21,11 @@
   <button id="scroller" mat-raised-button (click)="handleScroll()">
     <i class="fa fa-2x fa-angle-down" aria-hidden="true"></i>
   </button>
-
-  <div id="message-container" class="p-3 d-flex">
-    <div class="emoji-content"></div>
-    <textarea [(ngModel)]="message" (keydown.enter)="sendMessage();false" placeholder="Escribe un mensaje aquí"></textarea>
-    <button [disabled]="!message" (click)="sendMessage()" class="d-flex" id="send-message-btn">
-      <i [ngClass]="{'active': message }" class="fa fa-2x fa-paper-plane-o"></i>
-    </button>
-  </div>
-
+</div>
+<div id="message-container" class="p-3 d-flex">
+  <div class="emoji-content"></div>
+  <textarea [(ngModel)]="message" (keydown.enter)="sendMessage();false" placeholder="Escribe un mensaje aquí"></textarea>
+  <button [disabled]="!message" (click)="sendMessage()" class="d-flex" id="send-message-btn">
+    <i [ngClass]="{'active': message }" class="fa fa-2x fa-paper-plane-o"></i>
+  </button>
 </div>
