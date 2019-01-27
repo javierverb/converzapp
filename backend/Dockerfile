@@ -1,4 +1,6 @@
-FROM alpine:latest
-ADD "gateway.bin" "bin/."
+FROM ubuntu:18.10
+COPY gateway.bin home/.
+COPY config.conf home/.
+WORKDIR home/
 RUN ["chmod", "+x", "gateway.bin"]
-# CMD "sh bin/gateway.bin"
+EXPOSE 5000

@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+
+  converzapp-service:
+    container_name: converzapp
+    build:
+      context: ./ng-app
+      dockerfile: Dockerfile
+    volumes:
+      - './ng-app/:/converzapp'
+      - '/converzapp/node_modules'
+    ports:
+      - '4200:4200'
+    # This makes the container run on the same network stack as your
+    # workstation. Meaning that you can interact on "localhost".
+    network_mode: host
+    command: ["npm", "start"]
+    environment:
+      - NODE_ENV=development
+  
+  gateway:
+    container_name: gateway
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - '5000:5000'
+    command: ["./gateway.bin"]
