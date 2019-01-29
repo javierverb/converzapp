@@ -2,8 +2,8 @@ version: '3.5'
 
 services:
 
-  converzapp-service:
-    container_name: converzapp
+  web:
+    container_name: web
     build:
       context: ./ng-app
       dockerfile: Dockerfile
@@ -18,6 +18,8 @@ services:
     command: ["npm", "start"]
     environment:
       - NODE_ENV=development
+    depends_on:
+      - gateway
   
   gateway:
     container_name: gateway
@@ -27,3 +29,15 @@ services:
     ports:
       - '5000:5000'
     command: ["./gateway.bin"]
+
+  web-prod:
+    container_name: web-prod
+    build:
+      context: ./
+      dockerfile: /ng-app/Dockerfile-prod
+    ports:
+      - '80:80'
+    command: ["nginx", "-g", "daemon off;"]
+    depends_on:
+      - gateway
+    network_mode: host
