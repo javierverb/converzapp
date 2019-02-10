@@ -2,7 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatIconModule, MatListModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatToolbarModule,
+         MatButtonModule, MatSidenavModule, MatIconModule,
+         MatListModule, MatTabsModule, MatCardModule,
+         MatFormFieldModule, MatInputModule } from '@angular/material';
+
+import { searchPipe } from '@app/pipes/search-pipe';
 
 import { CoreRoutingModule } from './app-routing.module';
 import { BaseComponent } from './base/base.component';
@@ -13,6 +18,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { GlobalsService } from '@app/services/globals.service';
 import { ContactsComponent } from './contacts/contacts.component';
 import { ChatFragmentComponent } from './chat-fragment/chat-fragment.component';
+import { NickComponent } from './nick/nick.component';
 
 
 @NgModule({
@@ -23,6 +29,8 @@ import { ChatFragmentComponent } from './chat-fragment/chat-fragment.component';
     GroupsComponent,
     ContactsComponent,
     ChatFragmentComponent,
+    NickComponent,
+    searchPipe,
   ],
   imports: [
     BrowserModule,
@@ -30,10 +38,15 @@ import { ChatFragmentComponent } from './chat-fragment/chat-fragment.component';
     CoreRoutingModule,
     //  material modules:
     BrowserAnimationsModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatCardModule,
+    MatInputModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
     MatIconModule,
+    MatTabsModule,
     MatListModule,
   ],
   entryComponents: [

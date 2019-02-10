@@ -25,3 +25,19 @@ body {
 .position-sticky {
   position: sticky !important;
 }
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: $light-sea !important;
+}
+
+.mat-tab-label {
+  min-width: 50% !important;
+}
+.centered-spinner {
+  padding-top: 30vh;
+  > * {
+    margin: auto;
+  }
+}
+.text-ellipsis {
+  text-overflow: ellipsis;
+}

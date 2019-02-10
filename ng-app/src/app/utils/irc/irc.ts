@@ -5,6 +5,7 @@ import { ChannelList } from './channel-list';
 import { ContactList } from './contact-list';
 import { Parser } from './parser';
 import { codes } from './_events';
+import { NickError } from './_exceptions';
 
 declare var md5;
 
@@ -22,12 +23,13 @@ export class IRC {
   public conversation = {};
 
   public bsContacts: BehaviorSubject<ContactList>;
+  public onCreate = new BehaviorSubject(null);
   private _contacts: ContactList;
 
-  private readonly __servername = 'irc.irc-hispano.org';
-  public username = 'mynameisskrillex';
+  public username = '';
 
-  constructor() {
+  constructor(username: string) {
+    this.username = username;
     this._parser = new Parser();
     this._channels = new ChannelList();
     this._contacts = new ContactList();
@@ -46,7 +48,7 @@ export class IRC {
   }
 
   private _configureSession(): void {
-    var msg = `USER ${this.username} ${this.username} ${this.__servername} :mi nombre real`;
+    var msg = `USER ${this.username} ${this.username} irc.irc-hispano.org :${this.username}`;
     this._ws.send(msg);
     this._ws.send(`NICK ${this.username}`);
     msg = 'CAP REQ :account-notify extended-join identify-msg multi-prefix';
@@ -56,7 +58,14 @@ export class IRC {
   }
 
   private _onwelcome(content): void {
+    this.onCreate.next({'hasError': false});
     this._listChannels();
+  }
+
+  private _onnicknameinuse(content) {
+    var msg = content.split(':')[2];
+    this.onCreate.next({'hasError': true, 'typeError': NickError, 'msg': msg});
+    this._ws.close();
   }
 
   private _onping(content): void {
@@ -124,10 +133,19 @@ export class IRC {
     */
     var minValue = '40';
     var maxValue = '10000';
-    this._ws.send(`LIST *sexo* >${minValue},<${maxValue}`);
+    this._ws.send(`LIST >${minValue},<${maxValue}`);
   }
 
   private _onlistend() {
+    this._channels.list.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
     this.asyncChannels.next(this._channels);
     this.asyncChannels.complete();
   }

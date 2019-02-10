@@ -24,15 +24,16 @@ export class ChatsComponent implements OnInit {
   }
 
   ngOnInit() {
+    const irc = this.globals.getIRC();
     this.handleScroll();
     this.route.paramMap.subscribe((param) => {
       this.chatId = param.get('id');
       this.groupService.triggerSelectedGroup(this.chatId);
-      this.conversation = this.globals.irc.bsConversation.value[this.chatId];
+      this.conversation = irc.bsConversation.value[this.chatId];
       this.globals.addChatFragment(this.chatId);
     });
-    this.username = this.globals.irc.username;
-    this.globals.irc.bsConversation.subscribe((converzations: any) => {
+    this.username = irc.username;
+    irc.bsConversation.subscribe((converzations: any) => {
       this.conversation = converzations[this.chatId];
     });
   }
@@ -40,7 +41,7 @@ export class ChatsComponent implements OnInit {
 
   private sendMessage() {
     if (this.message) {
-      this.globals.irc.privmsg(this.chatId, this.message);
+      this.globals.getIRC().privmsg(this.chatId, this.message);
       this.message = '';
     }
   }

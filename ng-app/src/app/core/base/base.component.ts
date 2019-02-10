@@ -8,6 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class BaseComponent implements OnInit {
 
   constructor() { }
+  private configuratedNick: boolean = false;
+
+  private onNickname(value) {
+    console.log('called!', value);
+  }
 
   ngOnInit() {
   }

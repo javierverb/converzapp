@@ -10,14 +10,15 @@ import { GroupsService } from '@app/services/groups.service';
 export class ContactsComponent implements OnInit {
 
   constructor(private groupService: GroupsService,
-              private globalService: GlobalsService) { }
+              private globals: GlobalsService) { }
 
 
   private contacts = [];
 
   ngOnInit() {
+    const irc = this.globals.getIRC();
     this.groupService.change.subscribe((groupId) => {
-      this.contacts = this.globalService.irc.bsContacts.value.listByChannel(groupId);
+      this.contacts = irc.bsContacts.value.listByChannel(groupId);
     });
   }
 
