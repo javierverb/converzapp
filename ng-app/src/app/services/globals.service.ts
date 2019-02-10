@@ -11,8 +11,17 @@ export class GlobalsService {
 
   private _irc = null;
 
+  private _groups = [];
+
+  set groups(items) {
+    this._groups = items;
+  }
+  get groups() {
+    return this._groups;
+  }
+
   public getIRC(nickname = '') {
-    if (!this._irc) {
+    if (!this._irc || !this._irc.isConnected) {
       this._irc = new IRC(nickname);
     }
     return this._irc;

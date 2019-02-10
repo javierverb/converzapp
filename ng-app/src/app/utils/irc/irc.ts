@@ -28,6 +28,10 @@ export class IRC {
 
   public username = '';
 
+  get isConnected(): boolean {
+    return this._ws.readyState == 1;
+  }
+
   constructor(username: string) {
     this.username = username;
     this._parser = new Parser();
@@ -63,6 +67,16 @@ export class IRC {
   }
 
   private _onnicknameinuse(content) {
+    var msg = content.split(':')[2];
+    this.onCreate.next({'hasError': true, 'typeError': NickError, 'msg': msg});
+    this._ws.close();
+  }
+  private _onerroneusnickname(content) {
+    var msg = content.split(':')[2];
+    this.onCreate.next({'hasError': true, 'typeError': NickError, 'msg': msg});
+    this._ws.close();
+  }
+  private _onnonicknamegiven(content) {
     var msg = content.split(':')[2];
     this.onCreate.next({'hasError': true, 'typeError': NickError, 'msg': msg});
     this._ws.close();
@@ -150,8 +164,14 @@ export class IRC {
     this.asyncChannels.complete();
   }
 
-  private _onendofmotd(content) {
-    this._ws.send('JOIN #sexo');
+  public joinChannels(channels: any[]) {
+    var target = '';
+    for (let i = 0; i < channels.length; i++) {
+      let channel = channels[i];
+      target = target + `${channel.name},`;
+    }
+    target = target.substr(0, target.length -1); // remove the last comma
+    this._ws.send(`JOIN ${target}`);
   }
 
   public privmsg(target, message) {

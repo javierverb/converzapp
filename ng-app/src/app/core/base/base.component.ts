@@ -11,7 +11,7 @@ export class BaseComponent implements OnInit {
   private configuratedNick: boolean = false;
 
   private onNickname(value) {
-    console.log('called!', value);
+    this.configuratedNick = true;
   }
 
   ngOnInit() {

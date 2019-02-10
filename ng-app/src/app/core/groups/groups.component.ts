@@ -33,10 +33,7 @@ export class GroupsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    const irc = this.globals.getIRC();
-    irc.asyncChannels.subscribe((groups: ChannelList) => {
-      this.groups = groups.list;
-    });
+    this.groups = this.globals.groups;
     this.globals.bsChatFragments.subscribe((contactData) => {
       if (contactData) {
         this.createComponent(contactData);

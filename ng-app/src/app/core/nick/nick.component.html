@@ -42,8 +42,8 @@
         </mat-form-field>
 
         <div class="group-container">
-          <mat-selection-list #selectedGroups>
-            <mat-list-option *ngFor="let group of groups | search : query">
+          <mat-selection-list [(ngModel)]="selectedGroups" #list>
+            <mat-list-option [value]="group" *ngFor="let group of groups | search : query">
               <span mat-line>
                 {{ group.name }}({{ group.quantity }})
               </span>
@@ -53,7 +53,7 @@
             </mat-list-option>
           </mat-selection-list>
         </div>
-        <button (click)="joinChannels()" [disabled]="!selectedGroups.selectedOptions.selected.length" mat-raised-button color="primary" class="mr-3 mt-3 float-right" type="submit">
+        <button (click)="joinChannels()" [disabled]="!list.selectedOptions.selected.length" mat-raised-button color="primary" class="mr-3 mt-3 float-right" type="submit">
           Continuar
         </button>
       </ng-template>

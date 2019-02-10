@@ -10,7 +10,7 @@ import { ChannelList } from '@app/utils/irc/channel-list';
 })
 export class NickComponent implements OnInit {
 
-  @Output() public onNickname = new EventEmitter<string>();
+  @Output('nickname') public onNickname = new EventEmitter<string>();
 
   private selectedIndex = 0;
   private query = '';
@@ -19,6 +19,7 @@ export class NickComponent implements OnInit {
   private nickname = '';
   private officialNickname = '';
   private nickError = false;
+  private selectedGroups;
   private groups = [];
 
   constructor(private globals: GlobalsService) { }
@@ -55,11 +56,17 @@ export class NickComponent implements OnInit {
   }
 
   private joinChannels() {
-
+    const irc = this.globals.getIRC();
+    this.globals.groups = this.selectedGroups;
+    this.showSpinner = true;
+    irc.joinChannels(this.selectedGroups);
+    setTimeout(() => {
+      this.showSpinner = false;
+      this.onNickname.emit(this.officialNickname);
+    }, 2500);
   }
 
   ngOnInit() {
-    // setTimeout(() => this.showSpinner = false, 2500);
   }
 
 }
