@@ -20,7 +20,7 @@ services:
       - NODE_ENV=development
     depends_on:
       - gateway
-  
+
   gateway:
     container_name: gateway
     build:
@@ -34,10 +34,9 @@ services:
     container_name: web-prod
     build:
       context: ./
-      dockerfile: /ng-app/Dockerfile-prod
+      dockerfile: ng-app/Dockerfile-prod
     ports:
       - '80:80'
     command: ["nginx", "-g", "daemon off;"]
     depends_on:
       - gateway
-    network_mode: host
