@@ -39,7 +39,7 @@ export class IRC {
     this._contacts = new ContactList();
     this.bsContacts = new BehaviorSubject(this._contacts);
 
-    this._ws = new WebSocket('ws://localhost:5000/webirc/websocket/');
+    this._ws = new WebSocket('ws://converzapp.com:5000/webirc/websocket/');
     this._ws.onmessage = (event: any) => {
       var commandName = this._parser.parseCommand(event.data);
       // like as getattr from python:
