@@ -36,7 +36,7 @@ services:
       context: ./
       dockerfile: ng-app/Dockerfile-prod
     ports:
-      - '80:80'
+      - '8080:8080'
     command: ["nginx", "-g", "daemon off;"]
     depends_on:
       - gateway

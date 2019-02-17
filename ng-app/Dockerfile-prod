@@ -29,5 +29,4 @@ FROM nginx:1.13.9-alpine
 COPY --from=builder /usr/src/app/dist/ng-app-v2 /usr/share/nginx/html
 COPY ngnix-config.conf /etc/nginx/conf.d/default.conf
 
-# expose port 80
-EXPOSE 80
+EXPOSE 8080
