@@ -11,10 +11,10 @@ import { GroupsService } from '@app/services/groups.service';
 export class ChatsComponent implements OnInit {
 
   constructor(private groupService: GroupsService, private route: ActivatedRoute, private globals: GlobalsService) {}
-  private chatId = '';
-  private conversation: any[];
-  private username = '';
-  private message = '';
+  chatId = '';
+  conversation: any[];
+  username = '';
+  message = '';
 
   private positionMap = {};
 
@@ -39,7 +39,7 @@ export class ChatsComponent implements OnInit {
   }
 
 
-  private sendMessage() {
+  sendMessage() {
     if (this.message) {
       this.globals.getIRC().privmsg(this.chatId, this.message);
       this.message = '';

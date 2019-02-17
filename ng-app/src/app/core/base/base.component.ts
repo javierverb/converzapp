@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class BaseComponent implements OnInit {
 
   constructor() { }
-  private configuratedNick: boolean = false;
+  configuratedNick: boolean = false;
 
   private onNickname(value) {
     this.configuratedNick = true;

@@ -14,7 +14,7 @@ declare var md5;
 })
 export class GroupsComponent implements OnInit, OnDestroy {
 
-  private groups = [];
+  groups = [];
   private componentRef: ComponentRef<ChatFragmentComponent>;
 
   @ViewChild('componentHolder', { read: ViewContainerRef }) componentHolder: ViewContainerRef;

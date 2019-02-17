@@ -13,7 +13,7 @@ export class ContactsComponent implements OnInit {
               private globals: GlobalsService) { }
 
 
-  private contacts = [];
+  contacts = [];
 
   ngOnInit() {
     const irc = this.globals.getIRC();

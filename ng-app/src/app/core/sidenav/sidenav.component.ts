@@ -12,7 +12,7 @@ export class SidenavComponent implements OnInit {
   @ViewChild('drawerRight') drawerRight: MatSidenav;
   constructor() { }
 
-  private _resizeHeader() {
+  _resizeHeader() {
     var sidenavHeader = <HTMLElement>document.querySelector('.sidenav-header');
     var sidenavContent = <HTMLElement>document.querySelector('.sidenav-content');
     var parentWidth = `${sidenavContent.offsetWidth}px`;

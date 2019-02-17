@@ -12,13 +12,13 @@ export class NickComponent implements OnInit {
 
   @Output('nickname') public onNickname = new EventEmitter<string>();
 
+  showSpinner = false;
+  nickError = false;
   private selectedIndex = 0;
   private query = '';
-  private showSpinner = false;
   private configuratedNick = false;
   private nickname = '';
   private officialNickname = '';
-  private nickError = false;
   private selectedGroups;
   private groups = [];
 
