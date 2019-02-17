@@ -16,7 +16,7 @@ ENV PATH /usr/src/app/node_modules/.bin:$PATH
 RUN npm install --silent
 
 # generate build
-RUN npm run build
+RUN ng build --prod
 
 ##################
 ### production ###
